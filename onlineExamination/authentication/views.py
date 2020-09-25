@@ -39,3 +39,7 @@ def signup(request):
         return redirect('/home')
     
     pass
+
+def logout(request):
+    auth.logout(request)
+    return redirect('/home')
