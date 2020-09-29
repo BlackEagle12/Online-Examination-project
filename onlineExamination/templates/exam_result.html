@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content%}
+	<div class="all-title-box">
+		<div class="container text-center">
+			<h1>Blog Single<span class="m_1">Lorem Ipsum dolroin gravida nibh vel velit.</span></h1>
+		</div>
+	</div>
+	{%for test in exam%}
+    <div id="overviews" class="section wb">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 blog-post-single">
+                    <div class="blog-item">
+						<div class="image-blog" style="margin-bottom: 80px;">
+							<img src={% static "user/images/blog_single.jpg" %} alt="" class="img-fluid">
+						</div>
+						<div class="post-content">
+							<div class="post-date">
+								<span class="day">30</span>
+								<span class="month">Nov</span>
+							</div>
+							<div class="blog-title">
+								<h2><a href="#" title="">{{test.name}}</a></h2>
+							</div>
+							<div class="blog-desc">
+								<p>{{test.description}}</p>
+								<blockquote class="default">
+									<p><b>Instructions To Attempt Test</b></p>
+									<p>{{test.instruction}}</p>
+								</blockquote>
+								<p style="margin: 10px 0px 15px 0px;">
+									<b>Start :</b><img style="height: 25px; width: 30px;" src={% static "user/images/time_icon.png" %}>   {{test.start}}
+								</p>
+								<p style="margin: 10px 0px 15px 0px;">
+									<b>Close :</b><img style="height: 25px; width: 30px;" src={% static "user/images/time_icon.png" %}>   {{test.close}}
+								</p>
+								<p style="margin: 10px 0px 15px 0px;">
+									<h2><b>Total Marks:</b> {{test.total_marks}}</h2>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="blog-author">
+						<div class="author-bio">
+							<h3 class="author_name"><a href="#">{{test.generated_by}}</a></h3>
+							<h5>XYZ at <a href="#">Collage name</a></h5>
+							<p class="author_det">
+								Lorem ipsum dolor sit amet, consectetur adip, sed do eiusmod tempor incididunt  ut aut reiciendise voluptat maiores alias consequaturs aut perferendis doloribus omnis saperet docendi nec, eos ea alii molestiae aliquand.
+							</p>
+						</div>
+						<div class="author-desc">
+							<img src={% static "user/images/author.jpg" %} alt="about author">
+							<ul class="author-social">
+								<li><i class="fa fa-facebook"><h3 style="color: white;">Proff.  {{test.generated_by}}</h3></i></li>
+							</ul>
+						</div>
+					</div>
+                </div><!-- end col -->
+			</div><!-- end row -->
+			<br>
+			<div class="col-md-12 post-btn">
+				<form action="../students/continue_exam" method="POST">
+					{% csrf_token %}
+					<input type="hidden" name="no" value='0'/>
+					<input type="hidden" name="id" value="{{test.id}}"/>
+					<button type="submit" class="hover-btn-new orange" name="prev" value="false"><span>Start Exam</span></button>
+
+				</form>
+			</div>
+        </div><!-- end container -->
+	</div><!-- end section -->
+	{% endfor %}
+{% endblock %}

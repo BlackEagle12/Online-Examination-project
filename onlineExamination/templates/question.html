@@ -1,0 +1,28 @@
+{% extends 'base.html'%}
+{% load static%}
+
+{% block content %}
+
+    <form action="../students/continue_exam" method="POST">
+        {% csrf_token %}
+        <p>Question {{no}}: {{question.question}}</p>
+        <pre> <input type="radio" value="{{question.option_a}}" name="answer">  {{question.option_a}}</pre>
+        <pre> <input type="radio" value="{{question.option_b}}" name="answer">  {{question.option_b}}</pre>
+        <pre> <input type="radio" value="{{question.option_c}}" name="answer">  {{question.option_c}}</pre>
+        <pre> <input type="radio" value="{{question.option_d}}" name="answer">  {{question.option_d}}</pre>
+
+        <input type="hidden" name="no" value="{{no}}"/>
+        <input type="hidden" name="id" value="{{test}}"/>
+        <div class="col-md-12 post-btn">
+        {% if no != 1 %}
+            <button type="submit" name="prev" value="true" class="hover-btn-new orange" style="margin: 10px;"><span>prev</span></button>
+        {% endif %}
+        {% if no == maximum%}
+            <button type="submit" name="prev" value="submit" class="hover-btn-new orange" style="margin: 10px;"><span>Submit</span></button>
+        {% else %}
+            <button type="submit" name="prev" value="false" class="hover-btn-new orange" style="margin: 10px;"><span>Next</span></button>
+        {% endif %}
+        </div>
+    </form>
+
+{% endblock%}
