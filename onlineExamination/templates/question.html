@@ -3,26 +3,182 @@
 
 {% block content %}
 
-    <form action="../students/continue_exam" method="POST">
+<style>
+
+  .customcontainer {
+    min-height: 50vh;
+    width: 100%;
+    display: flex;
+  }
+  
+  .customquiz {
+    margin: auto;
+    width: 100%;
+    max-width: 30em;
+    display: grid;
+    grid-auto-rows: auto;
+    grid-columns: 1fr;
+    padding: 2em;
+    grid-gap: 1em;
+    border: 1px solid #fafafc - #111;
+    box-shadow: 0px 5px 8px rgba(0, 10, 20, 0.06);
+  }
+  
+  .customquiz-title {
+    font-size: 2em;
+  }
+  
+  .customquiz-question {
+    font-size: 1.15em;
+  }
+  
+  .customquiz-answer {
+    position: relative;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    user-select: none;
+    background: linear-gradient(#fafafc, white);
+    box-shadow: 0px 2px 2px 1px rgba(0, 10, 20, 0.07);
+  }
+  
+  .customquiz-answer p {
+    z-index: 1000;
+  }
+  
+  .customcircle {
+    position: relative;
+    height: 1em;
+    width: 1em;
+    margin-left: 1em;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    border: 0.3em solid #666677;
+    background-color: #666677;
+  }
+  
+  .customquiz-answer p {
+    display: block;
+    margin: 1em;
+    z-index: 10;
+  }
+  
+  .customfeedback {
+    background-color: #00ccaa;
+  }
+  
+  input {
+    display: none;
+  }
+  
+  .customhighlight {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  
+  input:hover ~ .customhighlight {
+    background-color: #fafafc - #020202;
+  }
+  
+  input:checked ~ .customhighlight {
+    background-color: #ffdf44;
+  }
+  
+  input:checked ~ .customcircle {
+    background-color: #fafafc;
+    border-color: #dd0077;
+  }
+</style>
+
+    <div class="all-title-box">
+        <div class="container text-center">
+            <h1>{{heading}}</h1>
+        </div>
+    </div>
+
+    <form action="../students/continue_exam" method="POST" onload="disablebtns()">
         {% csrf_token %}
-        <p>Question {{no}}: {{question.question}}</p>
+
+        <!-- <p>Question {{no}}: {{question.question}}</p>
         <pre> <input type="radio" value="{{question.option_a}}" name="answer">  {{question.option_a}}</pre>
         <pre> <input type="radio" value="{{question.option_b}}" name="answer">  {{question.option_b}}</pre>
         <pre> <input type="radio" value="{{question.option_c}}" name="answer">  {{question.option_c}}</pre>
-        <pre> <input type="radio" value="{{question.option_d}}" name="answer">  {{question.option_d}}</pre>
+        <pre> <input type="radio" value="{{question.option_d}}" name="answer">  {{question.option_d}}</pre> -->
+        <div class="customcontainer">
+
+            <div class="customquiz">
+
+                <div class="customquiz-question">Question {{no}}: {{question.question}}</div>
+
+                <label class="customquiz-answer" onclick="enablebtns()">
+                    <input type="radio" name="answer" value="{{question.option_a}}" id="answer1">
+                    <div class="customhighlight"></div>
+                    <div class="customcircle"></div>
+                    <p>{{question.option_a}}</p>
+                </label>
+
+                <label class="customquiz-answer correct" onclick="enablebtns()">
+                    <input type="radio" name="answer" value="{{question.option_b}}" id="answer1">
+                    <div class="customhighlight"></div>
+                    <div class="customcircle"></div>
+                    <p>{{question.option_b}}</p>
+                </label>
+
+                <label class="customquiz-answer" onclick="enablebtns()">
+                    <input type="radio" name="answer" value="{{question.option_c}}" id="answer1">
+                    <div class="customhighlight"></div>
+                    <div class="customcircle"></div>
+                    <p>{{question.option_c}}</p>
+                </label>
+
+                <label class="customquiz-answer" onclick="enablebtns()">
+                    <input type="radio" name="answer" value="{{question.option_d}}" id="answer1">
+                    <div class="customhighlight"></div>
+                    <div class="customcircle"></div>
+                    <p>{{question.option_d}}</p>
+                </label>
+          
+                <div class="col-md-12 post-btn">
+                    {% if no != 1 %}
+                        <button type="submit" name="action" value="prev" class="hover-btn-new orange" style="margin: 10px;"><span>prev</span></button>
+                    {% endif %}
+                    {% if no == maximum%}
+                        <button type="submit" name="action" value="submit" class="hover-btn-new orange" style="margin: 10px;"><span>Submit</span></button>
+                    {% else %}
+                        <button type="submit" name="action" value="next" class="hover-btn-new orange" style="margin: 10px;"><span>Next</span></button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
 
         <input type="hidden" name="no" value="{{no}}"/>
-        <input type="hidden" name="id" value="{{test}}"/>
-        <div class="col-md-12 post-btn">
-        {% if no != 1 %}
-            <button type="submit" name="prev" value="true" class="hover-btn-new orange" style="margin: 10px;"><span>prev</span></button>
-        {% endif %}
-        {% if no == maximum%}
-            <button type="submit" name="prev" value="submit" class="hover-btn-new orange" style="margin: 10px;"><span>Submit</span></button>
-        {% else %}
-            <button type="submit" name="prev" value="false" class="hover-btn-new orange" style="margin: 10px;"><span>Next</span></button>
-        {% endif %}
-        </div>
-    </form>
+        <input type="hidden" name="heading" value="{{heading}}"/>
+        <input type="hidden" name="attemptid" value="{{attemptid}}"/>
 
+    </form>
+    <script>
+
+        var btns = document.getElementsByName("action")
+
+        for(var i = 1 ; i < btns.length ; i++){
+            btns[i].disabled = true;
+            btns[i].style.opacity = "0.5";
+        }
+        if(btns.length == 1){
+            btns[0].disabled = true;
+            btns[0].style.opacity = "0.5";
+        }
+
+        function enablebtns(){
+            for(var i = 0 ; i < btns.length ; i++){
+                btns[i].disabled = false;
+                btns[i].style.opacity = "0.9";
+            }
+
+        }
+    </script>
 {% endblock%}

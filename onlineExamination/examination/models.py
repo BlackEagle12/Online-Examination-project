@@ -19,14 +19,15 @@ class Question(models.Model):
     option_b = models.CharField(max_length=100)
     option_c = models.CharField(max_length=100)
     option_d = models.CharField(max_length=100)
-    correct_ans = models.CharField(max_length=1)
+    correct_ans = models.CharField(max_length=100)
 
 class Attempt(models.Model):
-    user_id = models.IntegerField()
+    user_id = models.CharField(max_length=100)
     test_id = models.IntegerField()
+    submitted = models.BooleanField(default=False)
 
 class Answer(models.Model):
     attempt_id = models.IntegerField()
     question_id = models.IntegerField()
-    submitted_ans = models.CharField(max_length=1)
-    obtained_marks = models.DateTimeField();
+    submitted_ans = models.CharField(max_length=100)
+    obtained_marks = models.IntegerField()

@@ -2,12 +2,13 @@
 {% load static %}
 
 {% block content%}
+{%for test in exam%}
 	<div class="all-title-box">
 		<div class="container text-center">
-			<h1>Blog Single<span class="m_1">Lorem Ipsum dolroin gravida nibh vel velit.</span></h1>
+			<h1>{{test.name}}<span class="m_1">Lorem Ipsum dolroin gravida nibh vel velit.</span></h1>
 		</div>
 	</div>
-	{%for test in exam%}
+
     <div id="overviews" class="section wb">
         <div class="container">
             <div class="row">
@@ -61,13 +62,14 @@
 			</div><!-- end row -->
 			<br>
 			<div class="col-md-12 post-btn">
-				<form action="../students/continue_exam" method="POST">
+				<!-- <form action="../students/continue_exam" method="POST">
 					{% csrf_token %}
 					<input type="hidden" name="no" value='0'/>
 					<input type="hidden" name="id" value="{{test.id}}"/>
 					<button type="submit" class="hover-btn-new orange" name="prev" value="false"><span>Start Exam</span></button>
 
-				</form>
+				</form> -->
+				<a href="../students/attempt_quiz?no='0'&testid={{test.id}}"><button type="submit" class="hover-btn-new orange" name="prev" value="false"><span>Start Exam</span></button></a>
 			</div>
         </div><!-- end container -->
 	</div><!-- end section -->

@@ -222,7 +222,6 @@
                     <div class="sign-up-htm">
                         <form action="signup" onsubmit="return validate()" method="POST">
                             {% csrf_token %}
-                            
                             <div class="group">
                                 <label for="user" class="label">First name</label>
                                 <input id="user" type="text" class="input" name="firstname" required>
@@ -242,7 +241,7 @@
                             <div class="group">
                                 <label for="pass" class="label">Repeat Password</label>
                                 <input id="pass" type="password" class="input" data-type="password" name="conformpassword" required>
-                            </div> 
+                            </div>
                             <div id="error" class="error">
                                 <div class="foot-lnk">
                                     password and conformpassword does not match
