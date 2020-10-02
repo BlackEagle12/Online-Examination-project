@@ -100,66 +100,83 @@
         </div>
     </div>
 
-    <form action="../students/continue_exam" method="POST" onload="disablebtns()">
-        {% csrf_token %}
+    {% if maximum == None%}
 
-        <!-- <p>Question {{no}}: {{question.question}}</p>
-        <pre> <input type="radio" value="{{question.option_a}}" name="answer">  {{question.option_a}}</pre>
-        <pre> <input type="radio" value="{{question.option_b}}" name="answer">  {{question.option_b}}</pre>
-        <pre> <input type="radio" value="{{question.option_c}}" name="answer">  {{question.option_c}}</pre>
-        <pre> <input type="radio" value="{{question.option_d}}" name="answer">  {{question.option_d}}</pre> -->
         <div class="customcontainer">
 
             <div class="customquiz">
 
-                <div class="customquiz-question">Question {{no}}: {{question.question}}</div>
+                    <div class="customquiz-question"><h1>Note</h1> <br> {{note}}</div>
 
-                <label class="customquiz-answer" onclick="enablebtns()">
-                    <input type="radio" name="answer" value="{{question.option_a}}" id="answer1">
-                    <div class="customhighlight"></div>
-                    <div class="customcircle"></div>
-                    <p>{{question.option_a}}</p>
-                </label>
+                    <div class="col-md-12 post-btn">
+                        <a href="../students/exams"><button class="hover-btn-new orange" style="margin: 10px;"><span>Go Back</span></button></a>
+                    </div>
 
-                <label class="customquiz-answer correct" onclick="enablebtns()">
-                    <input type="radio" name="answer" value="{{question.option_b}}" id="answer1">
-                    <div class="customhighlight"></div>
-                    <div class="customcircle"></div>
-                    <p>{{question.option_b}}</p>
-                </label>
-
-                <label class="customquiz-answer" onclick="enablebtns()">
-                    <input type="radio" name="answer" value="{{question.option_c}}" id="answer1">
-                    <div class="customhighlight"></div>
-                    <div class="customcircle"></div>
-                    <p>{{question.option_c}}</p>
-                </label>
-
-                <label class="customquiz-answer" onclick="enablebtns()">
-                    <input type="radio" name="answer" value="{{question.option_d}}" id="answer1">
-                    <div class="customhighlight"></div>
-                    <div class="customcircle"></div>
-                    <p>{{question.option_d}}</p>
-                </label>
-          
-                <div class="col-md-12 post-btn">
-                    {% if no != 1 %}
-                        <button type="submit" name="action" value="prev" class="hover-btn-new orange" style="margin: 10px;"><span>prev</span></button>
-                    {% endif %}
-                    {% if no == maximum%}
-                        <button type="submit" name="action" value="submit" class="hover-btn-new orange" style="margin: 10px;"><span>Submit</span></button>
-                    {% else %}
-                        <button type="submit" name="action" value="next" class="hover-btn-new orange" style="margin: 10px;"><span>Next</span></button>
-                    {% endif %}
-                </div>
             </div>
+
         </div>
 
-        <input type="hidden" name="no" value="{{no}}"/>
-        <input type="hidden" name="heading" value="{{heading}}"/>
-        <input type="hidden" name="attemptid" value="{{attemptid}}"/>
+    {% else %}
 
-    </form>
+        <form action="../students/continue_exam" method="POST" onload="disablebtns()">
+            {% csrf_token %}
+
+            <div class="customcontainer">
+
+                <div class="customquiz">
+
+                        <div class="customquiz-question">Question {{no}}: {{question.question}}</div>
+
+                        <label class="customquiz-answer" onclick="enablebtns()">
+                            <input type="radio" name="answer" value="{{question.option_a}}" id="answer1">
+                            <div class="customhighlight"></div>
+                            <div class="customcircle"></div>
+                            <p>{{question.option_a}}</p>
+                        </label>
+
+                        <label class="customquiz-answer correct" onclick="enablebtns()">
+                            <input type="radio" name="answer" value="{{question.option_b}}" id="answer1">
+                            <div class="customhighlight"></div>
+                            <div class="customcircle"></div>
+                            <p>{{question.option_b}}</p>
+                        </label>
+
+                        <label class="customquiz-answer" onclick="enablebtns()">
+                            <input type="radio" name="answer" value="{{question.option_c}}" id="answer1">
+                            <div class="customhighlight"></div>
+                            <div class="customcircle"></div>
+                            <p>{{question.option_c}}</p>
+                        </label>
+
+                        <label class="customquiz-answer" onclick="enablebtns()">
+                            <input type="radio" name="answer" value="{{question.option_d}}" id="answer1">
+                            <div class="customhighlight"></div>
+                            <div class="customcircle"></div>
+                            <p>{{question.option_d}}</p>
+                        </label>
+
+                        <div class="col-md-12 post-btn">
+                            {% if no != 1 %}
+                                <button type="submit" name="action" value="prev" class="hover-btn-new orange" style="margin: 10px;"><span>prev</span></button>
+                            {% endif %}
+                            {% if no == maximum%}
+                                <button type="submit" name="action" value="submit" class="hover-btn-new orange" style="margin: 10px;"><span>Submit</span></button>
+                            {% else %}
+                                <button type="submit" name="action" value="next" class="hover-btn-new orange" style="margin: 10px;"><span>Next</span></button>
+                            {% endif %}
+                        </div>
+
+                </div>
+
+            </div>
+
+            <input type="hidden" name="no" value="{{no}}"/>
+            <input type="hidden" name="heading" value="{{heading}}"/>
+            <input type="hidden" name="attemptid" value="{{attemptid}}"/>
+
+        </form>
+        
+    {% endif %}
     <script>
 
         var btns = document.getElementsByName("action")

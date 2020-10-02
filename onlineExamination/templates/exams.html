@@ -1,0 +1,60 @@
+{% extends 'base.html'%}
+{% load static%}
+
+{% block content %}
+	<div class="all-title-box">
+		<div class="container text-center">
+			<h1>{{pageTitle}}<span class="m_1">Lorem Ipsum dolroin gravida nibh vel velit.</span></h1>
+		</div>
+	</div>
+	
+    <div id="overviews" class="section wb">
+        <div class="container">
+            <div class="section-title row text-center">
+                <div class="col-md-8 offset-md-2">
+                    <p class="lead">Lorem Ipsum dolroin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem!</p>
+                </div>
+            </div><!-- end title -->
+
+            <hr class="invis">
+
+            <div class="row">
+				{% for test in tests %}
+					<div class="col-lg-3 col-md-6 col-12">
+						<div class="course-item">
+							<div class="image-blog">
+								<img src={% static "user/images/blog_1.jpg" %} alt="" class="img-fluid">
+							</div>
+							<div class="course-br">
+								<div class="course-title">
+										<h2><a href="../students/exam?id={{test.exam.id}}" title="">{{test.exam.name}}</a></h2>
+								</div>
+								<div class="course-desc">
+									<p>{{test.exam.description}}</p>
+								</div>
+							</div>
+							<div class="course-meta-bot">
+								<ul>
+									{% if test.compleated%}
+										<li>Attempted</li>
+									{% else %}
+										<li>not Attempted</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="course-meta-bot">
+								<ul>
+									<li><i class="fa fa-calendar" aria-hidden="true"></i><img style="height: 25px; width: 30px;" src={% static "user/images/time_icon.png" %}></li>
+									<li><i class="fa fa-calendar" aria-hidden="true"></i><h5>{{test.exam.close}}</h5></li>
+								</ul>
+							</div>
+						</div>
+					</div><!-- end col -->
+				{% endfor %}
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </div><!-- end section -->
+
+{% endblock %}
+
+    

@@ -16,10 +16,10 @@
                 </div>
             </div><!-- end title -->
 
-            <hr class="invis"> 
+            <hr class="invis">
 
-            <div class="row"> 
-				{% for test in exams%}
+            <div class="row">
+				{% for test in tests %}
 					<div class="col-lg-3 col-md-6 col-12">
 						<div class="course-item">
 							<div class="image-blog">
@@ -27,16 +27,25 @@
 							</div>
 							<div class="course-br">
 								<div class="course-title">
-										<h2><a href="../students/exam?id={{test.id}}" title="">{{test.name}}</a></h2>
+										<h2><a href="../students/exam?id={{test.exam.id}}" title="">{{test.exam.name}}</a></h2>
 								</div>
 								<div class="course-desc">
-									<p>{{test.description}}</p>
+									<p>{{test.exam.description}}</p>
 								</div>
 							</div>
 							<div class="course-meta-bot">
 								<ul>
+									{% if test.compleated%}
+										<li>Attempted</li>
+									{% else %}
+										<li>not Attempted</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="course-meta-bot">
+								<ul>
 									<li><i class="fa fa-calendar" aria-hidden="true"></i><img style="height: 25px; width: 30px;" src={% static "user/images/time_icon.png" %}></li>
-									<li><i class="fa fa-calendar" aria-hidden="true"></i><h5>{{test.start}}</h5></li>
+									<li><i class="fa fa-calendar" aria-hidden="true"></i><h5>{{test.exam.close}}</h5></li>
 								</ul>
 							</div>
 						</div>
@@ -47,5 +56,3 @@
     </div><!-- end section -->
 
 {% endblock %}
-
-    

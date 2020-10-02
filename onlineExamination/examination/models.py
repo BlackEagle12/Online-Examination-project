@@ -10,6 +10,7 @@ class Test(models.Model):
     description = models.TextField()
     instruction = models.TextField()
     total_marks = models.IntegerField()
+    multipleAttempts = models.BooleanField(default=True)
 
 class Question(models.Model):
     test_id = models.IntegerField()
