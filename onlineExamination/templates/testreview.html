@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content%}
+    <style>
+
+        .customh1{
+            font-size: 30px;
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .customtable{
+            width:100%;
+            table-layout: fixed;
+        }
+        .customtbl-header{
+            background-color: rgba(255,255,255,0.3);
+        }
+        .customtbl-content{
+            overflow-x:auto;
+            margin-top: 0px;
+            border: 3px solid rgba(255,255,255,0.3);
+        }
+        .customth{
+            padding: 20px 15px;
+            text-align: center;
+            font-weight: 500;
+            font-size: 15px;
+            color: #fff;
+            text-transform: uppercase;
+        }
+        .customtd{
+            padding: 15px;
+            text-align: center;
+            vertical-align:middle;
+            font-weight: 300;
+            font-size: 25px;
+            color: #fff;
+            border-right: solid 3px rgba(255,255,255,0.1);
+        }
+
+        .customtdinner{
+            padding: 15px;
+            text-align: left;
+            vertical-align:middle;
+            font-weight: 300;
+            font-size: 20px;
+            color: #fff;
+            border-right: solid 3px rgba(255,255,255,0.1);
+        }
+
+        @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300,700);
+        body{
+            background: -webkit-linear-gradient(left, #25c481, #25b7c4);
+            background: linear-gradient(to right, #257481, #2547c4);
+            font-family: 'Roboto', sans-serif;
+        }
+        .customsection{
+            margin: 150px;
+        }
+
+        /* follow me template */
+
+        /* for custom scrollbar for webkit browser*/
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        }
+        ::-webkit-scrollbar-thumb {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        }
+    </style>
+    <div class="all-title-box">
+		<div class="container text-center">
+			<h1>{{heading}}<span class="m_1">Lorem Ipsum dolroin gravida nibh vel velit.</span></h1>
+		</div>
+    </div>
+
+    {% for attempt in attempts%}
+    <div class="customsection">
+        <!--for demo wrap-->
+        <h1 class="customh1">{{attempt.heading}}</h1>
+        <div class="customtbl-header">
+          <table cellpadding="0" cellspacing="0" border="0" class="customtable">
+            <thead>
+              <tr>
+                <th class="customth" style="width: 50px">Question<br><br>no</th>
+                <th class="customth" style="width: 750px";>Question</th>
+                <th class="customth" style="width: 150px;">correct<br><br>answer</th>
+                <th class="customth" style="width: 150px;">Submitted<br><br>answer</th>
+                <th class="customth" style="width: 100px;">Total<br><br>marks</th>
+                <th class="customth" style="width: 100px;">Obtained<br><br>marks</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+
+        <div class="customtbl-content">
+          <table cellpadding="0" class="customtable" cellspacing="0" border="0">
+            <tbody>
+                {% for row in attempt.allrows %}
+                    <tr style="border-bottom: solid 3px rgba(255,255,255,0.1);">
+                        <td class="customtd" style="width: 50px;">{{row.no}}</td>
+                        <td class="customtd" style="width: 750px;">
+                        <table class="customtable">
+                            <tr><td class="customtdinner" style="font-size: 25px; border: solid 1px rgba(255,255,255,0.1);"> Question : {{row.question.question}}</td></tr>
+                            <tr><td class="customtdinner" style=" border-right: solid 0px rgba(255,255,255,0.1);">A) {{row.question.option_a}}</td></tr>
+                            <tr><td class="customtdinner" style=" border-right: solid 0px rgba(255,255,255,0.1);">B) {{row.question.option_b}}</td></tr>
+                            <tr><td class="customtdinner" style=" border-right: solid 0px rgba(255,255,255,0.1);">C) {{row.question.option_c}}</td></tr>
+                            <tr><td class="customtdinner" style=" border-right: solid 0px rgba(255,255,255,0.1);">D) {{row.question.option_d}}</td></tr>
+                        </table>
+                        </td>
+                        <td class="customtd" style="width: 150px;">{{row.question.correct_ans}}</td>
+                        <td class="customtd" style="width: 150px;">{{row.answer.submitted_ans}}</td>
+                        <td class="customtd" style="width: 100px;">{{row.question.mark}}</td>
+                        <td class="customtd" style="width: 100px;">{{row.answer.obtained_marks}}</td>
+                    </tr>
+                {% endfor %}
+
+                <tr>
+                    <td colspan="4" class="customtd" style="width: 150px;">Total</td>
+                    <td class="customtd" style="width: 150px;">{{attempt.total}}</td>
+                    <td class="customtd" style="width: 150px;">{{attempt.obtain}}</td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+    {% endfor%}
+
+{% endblock%}

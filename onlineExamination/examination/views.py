@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from .models import Test,Question,Answer,Attempt
 import this
-
+from django.utils import timezone
 
 def exams(request):
     if(request.user.is_authenticated):
@@ -23,7 +23,7 @@ def exams(request):
                 temp.compleated = False
                 tests.append(temp)
                 continue
-            if exam.id == attandedExams[i][0]:
+            if exam.id == attandedExams[i][0]: #attandedExams[i] is a tuple with one element
                 temp.compleated = True
                 i = i + 1
             else:
@@ -35,19 +35,34 @@ def exams(request):
         return redirect('../auth/login')
 
 def results(request):
-    exams = ["test1","test2","test3"]
-    return render(request, 'results.html', {'pageTitle':'Results','exams': exams})
+    attandedExams = Attempt.objects.values_list('test_id').order_by('test_id').filter(user_id=request.user.username,submitted=True)
+    attandedExams = list(set(attandedExams))
+    tests = []
+    for exam in attandedExams:
+        test = Test.objects.get(id=exam[0]) #exam is a tuple with one element
+        tests.append(test)
+
+    return render(request, 'results.html', {'pageTitle':'Results','attandedExams': tests})
 
 def exam(request):
     Id = request.GET['id'];
-    exam = Test.objects.all().filter(id=Id)
+    exam = Test.objects.get(id=Id)
     return render(request, 'exam.html', {'exam': exam})
+
+def result(request):
+    Id = request.GET['id'];
+    test = Test.objects.get(id=Id)
+    return render(request, 'result.html', {'test': test})
 
 def attempt_quiz(request):
     testid = request.GET['testid']
     test = Test.objects.get(id=testid)
-
-    if not test.multipleAttempts:
+    now = timezone.now()
+    if (now > test.close):
+        note = 'This test has been closed on ' + str(test.close)
+        this.maximum = None
+        return render(request, 'question.html', {'note': note, 'heading':test.name, 'maximum':this.maximum})
+    elif not test.multipleAttempts:
         try:
             attempt = Attempt.objects.get(user_id=request.user.username,test_id=testid, submitted=True)
             note = 'MultiPle Attempts Are not allowed for this test'
@@ -125,3 +140,45 @@ def continue_exam(request):
         question = this.questions[no]
         return render(request, 'question.html', {'question': question, 'no':no+1, 'heading':heading, 'maximum':this.maximum, 'attemptid':attemptid})
 
+def testView(request):
+    testid = request.GET['testid'];
+    test = Test.objects.get(id=testid)
+    questions = Question.objects.all().filter(test_id=testid)
+    attempts = Attempt.objects.all().filter(test_id=testid, user_id=request.user.username, submitted=True)
+    class rows:
+        no: int
+        question : Question
+        answer : Answer
+
+    allattempt = []
+    class tables:
+        heading: str
+        allrows : list
+        total : int
+        obtain : int
+
+    no = 0
+    for x in attempts:
+        total = 0
+        obtain = 0
+        table = tables()
+        table.allrows = []
+
+        answers = Answer.objects.all().order_by('question_id').filter(attempt_id=x.id)
+
+        table.heading = "ATTEMPT - " + str(no+1)
+        no = no+1
+        for i in range(0,len(questions)):
+            row = rows()
+            row.no = i+1
+            row.question = questions[i]
+            row.answer = answers[i]
+            table.allrows.append(row)
+            total = total + row.question.mark
+            obtain = obtain + row.answer.obtained_marks
+
+        table.total = total
+        table.obtain = obtain
+        allattempt.append(table)
+
+    return render(request, 'testreview.html', { 'attempts':allattempt, 'heading': test.name })

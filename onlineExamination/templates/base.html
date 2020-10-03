@@ -52,7 +52,7 @@
 		</div>
 	</div>
     <!-- END LOADER -->
-    
+
 	<!-- Start header -->
 	<header class="top-navbar">
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -69,17 +69,6 @@
 					<ul class="navbar-nav ml-auto">
 						<li class="nav-item active"><a class="nav-link" href="../home">Home</a></li>
 						<li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">Course </a>
-							<div class="dropdown-menu" aria-labelledby="dropdown-a">
-								<a class="dropdown-item" href="course-grid-2.html">Course Grid 2 </a>
-								<a class="dropdown-item" href="course-grid-3.html">Course Grid 3 </a>
-								<a class="dropdown-item" href="course-grid-4.html">Course Grid 4 </a>
-							</div>
-						</li>
-						<li class="nav-item"><a class="nav-link" href="teachers.html">Teachers</a></li>
-						<li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
-                        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
                         {% if user.is_authenticated %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">{{ user.username }} </a>
@@ -144,7 +133,7 @@
                         </ul><!-- end links -->
                     </div><!-- end clearfix -->
                 </div><!-- end col -->
-				
+
                 <div class="col-lg-4 col-md-4 col-xs-12">
                     <div class="widget clearfix">
                         <div class="widget-title">
@@ -159,7 +148,7 @@
                         </ul><!-- end links -->
                     </div><!-- end clearfix -->
                 </div><!-- end col -->
-				
+
             </div><!-- end row -->
         </div><!-- end container -->
     </footer><!-- end footer -->
