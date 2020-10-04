@@ -173,9 +173,10 @@
             <input type="hidden" name="no" value="{{no}}"/>
             <input type="hidden" name="heading" value="{{heading}}"/>
             <input type="hidden" name="attemptid" value="{{attemptid}}"/>
+            <input type="hidden" name="remainWarnings" id="remainWarnings" value="{{remainWarnings}}" />
 
         </form>
-        
+
     {% endif %}
     <script>
 
@@ -195,7 +196,17 @@
                 btns[i].disabled = false;
                 btns[i].style.opacity = "0.9";
             }
-
         }
+
+        document.addEventListener("visibilitychange", function(){
+          var remainWarnings = document.getElementById('remainWarnings');
+          remainWarnings.value = '' +  --remainWarnings.value;
+          if (remainWarnings.value < 0){
+            alert("Suspicious activity found after this question your test will be submitted");
+          }
+          else{
+            alert("you are remaining with " + remainWarnings.value/2 + " Warnings");
+          }
+          })
     </script>
 {% endblock%}

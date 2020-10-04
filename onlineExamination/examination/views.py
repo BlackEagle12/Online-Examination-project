@@ -3,6 +3,7 @@ from .models import Test,Question,Answer,Attempt
 import this
 from django.utils import timezone
 
+
 def exams(request):
     if(request.user.is_authenticated):
         class test():
@@ -29,7 +30,6 @@ def exams(request):
             else:
                 temp.compleated = False
             tests.append(temp)
-
         return render(request, 'exams.html', {'pageTitle':'exams','tests': tests})
     else:
         return redirect('../auth/login')
@@ -102,10 +102,10 @@ def continue_exam(request):
         else:
             question = this.questions[0]
             this.maximum = len(this.questions)
-            return render(request, 'question.html', {'question': question, 'no':1, 'heading':test.name, 'maximum':this.maximum, 'attemptid':attemptid})
+            return render(request, 'question.html', {'question': question, 'no':1, 'heading':test.name, 'maximum':this.maximum, 'attemptid':attemptid, 'remainWarnings': 6})
 
     else:
-
+        remainWarnings = int(request.POST['remainWarnings'])
         attemptid = int(request.POST['attemptid'])
         heading = str(request.POST['heading'])
         no = int(request.POST['no'])
@@ -128,7 +128,7 @@ def continue_exam(request):
 
             answer.save()
 
-        if(action == "submit"):
+        if(action == "submit" or remainWarnings < 0):
             attempt = Attempt.objects.get(id=attemptid)
             attempt.submitted = True
             attempt.save()
@@ -138,7 +138,7 @@ def continue_exam(request):
             no = no-2
 
         question = this.questions[no]
-        return render(request, 'question.html', {'question': question, 'no':no+1, 'heading':heading, 'maximum':this.maximum, 'attemptid':attemptid})
+        return render(request, 'question.html', {'question': question, 'no':no+1, 'heading':heading, 'maximum':this.maximum, 'attemptid':attemptid, 'remainWarnings': remainWarnings})
 
 def testView(request):
     testid = request.GET['testid'];
@@ -179,6 +179,6 @@ def testView(request):
 
         table.total = total
         table.obtain = obtain
-        allattempt.append(table)
+        allattempt.append(table) 
 
     return render(request, 'testreview.html', { 'attempts':allattempt, 'heading': test.name })
