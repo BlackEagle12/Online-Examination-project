@@ -92,6 +92,23 @@
     background-color: #fafafc;
     border-color: #dd0077;
   }
+
+		.customTbl td {
+			color: white;
+			background-color: rgba(39, 39, 3, 0.931);
+			font-family: sans-serif;
+			width: 50px;
+			border-right: 1px black dashed;
+			text-align: center;
+			padding: 2%;
+		}
+		.customTbl th {
+			color: white;
+			background-color: rgba(0, 60, 255, 0.815);
+			border-bottom: 1px black solid;
+			border-right: 1px black dashed;
+			text-align: center;
+		}
 </style>
 
     <div class="all-title-box">
@@ -117,14 +134,25 @@
         </div>
 
     {% else %}
-
+        
         <form action="../students/continue_exam" method="POST" onload="disablebtns()">
             {% csrf_token %}
 
             <div class="customcontainer">
 
                 <div class="customquiz">
-
+                        <table class="customTbl">
+                          <tr>
+                            <th>Hour</th>
+                            <th>Minute</th>
+                          </tr>
+                          <tbody>
+                            <tr>
+                              <td id="customhours">{{remainTime.hours}}</td>
+                              <td id="customminutes">{{remainTime.minutes}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
                         <div class="customquiz-question">Question {{no}}: {{question.question}}</div>
 
                         <label class="customquiz-answer" onclick="enablebtns()">
@@ -159,11 +187,8 @@
                             {% if no != 1 %}
                                 <button type="submit" name="action" value="prev" class="hover-btn-new orange" style="margin: 10px;"><span>prev</span></button>
                             {% endif %}
-                            {% if no == maximum%}
-                                <button type="submit" name="action" value="submit" class="hover-btn-new orange" style="margin: 10px;"><span>Submit</span></button>
-                            {% else %}
-                                <button type="submit" name="action" value="next" class="hover-btn-new orange" style="margin: 10px;"><span>Next</span></button>
-                            {% endif %}
+                            <button type="submit" name="action" id="submitbtn" value="submit" class="hover-btn-new orange" style="margin: 10px;"><span>Submit</span></button>
+                            <button type="submit" name="action" value="next" class="hover-btn-new orange" style="margin: 10px;"><span>Next</span></button>
                         </div>
 
                 </div>
@@ -173,40 +198,54 @@
             <input type="hidden" name="no" value="{{no}}"/>
             <input type="hidden" name="heading" value="{{heading}}"/>
             <input type="hidden" name="attemptid" value="{{attemptid}}"/>
-            <input type="hidden" name="remainWarnings" id="remainWarnings" value="{{remainWarnings}}" />
+            <input type="hidden" name="remainWarnings" id="remainWarnings" value="{{remainWarnings}}"/>
+            <input type="hidden" name="remainHours" id="remainHours" value="{{remainTime.hours}}"/>
+            <input type="hidden" name="remainMinutes" id="remainMinutes" value="{{remainTime.minutes}}"/>
 
         </form>
 
     {% endif %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
 
-        var btns = document.getElementsByName("action")
+          $(window).blur(function(){
+            var remainWarnings = document.getElementById('remainWarnings');
+            var n = new Notification("Come Back");
+            remainWarnings.value = '' +  --remainWarnings.value;
+            if (remainWarnings.value < 0){
+              alert("Suspicious activity found after this question your test will be submitted");
+              var n = new Notification("Suspicious activity found after this question your test will be submitted");
+            }
+            else{
+              alert("you are remaining with " + remainWarnings.value + " Warnings");
+              var n = new Notification("you are remaining with " + remainWarnings.value + " Warnings");
+            }
+          });
+          $(window).focus(function(){
 
-        for(var i = 1 ; i < btns.length ; i++){
-            btns[i].disabled = true;
-            btns[i].style.opacity = "0.5";
-        }
-        if(btns.length == 1){
-            btns[0].disabled = true;
-            btns[0].style.opacity = "0.5";
-        }
+          });
 
-        function enablebtns(){
-            for(var i = 0 ; i < btns.length ; i++){
-                btns[i].disabled = false;
-                btns[i].style.opacity = "0.9";
+        remMinutes = {{remainTime.minutes}};
+        remHours = {{remainTime.hours}};
+        id = setInterval(myTimer, 1000);
+        function myTimer(){
+            remMinutes--;
+            document.getElementById("remainMinutes").value = remMinutes;
+            document.getElementById("customminutes").innerHTML = remMinutes;
+            if(remMinutes == 0){
+              if(remHours == 0){
+                clearInterval(id);
+                $("#submitbtn").click();
+              }
+              else{
+                remHours--;
+                remMinutes = 59;
+                document.getElementById("remainMinutes").value = remMinutes;
+                document.getElementById("customminutes").innerHTML = remMinutes;
+                document.getElementById("remainHours").value = remHours;
+                document.getElementById("customhours").innerHTML = remHours;
+              }
             }
         }
-
-        document.addEventListener("visibilitychange", function(){
-          var remainWarnings = document.getElementById('remainWarnings');
-          remainWarnings.value = '' +  --remainWarnings.value;
-          if (remainWarnings.value < 0){
-            alert("Suspicious activity found after this question your test will be submitted");
-          }
-          else{
-            alert("you are remaining with " + remainWarnings.value/2 + " Warnings");
-          }
-          })
     </script>
 {% endblock%}

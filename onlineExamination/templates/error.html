@@ -1,0 +1,45 @@
+{% extends 'base.html'%}
+{% load static%}
+
+{% block content %}
+<style>
+
+    .customcontainer {
+      min-height: 50vh;
+      width: 100%;
+      display: flex;
+    }
+
+    .customquiz {
+        margin: auto;
+        width: 100%;
+        max-width: 30em;
+        display: grid;
+        grid-auto-rows: auto;
+        grid-columns: 1fr;
+        padding: 2em;
+        grid-gap: 1em;
+        border: 1px solid #fafafc - #111;
+        box-shadow: 0px 5px 8px rgba(0, 10, 20, 0.06);
+      }
+
+      .customquiz-question {
+        font-size: 1.15em;
+      }
+</style>
+
+
+<div class="customcontainer">
+
+    <div class="customquiz">
+
+            <div class="customquiz-question"><h1>Note</h1> <br> {{note}}</div>
+
+            <div class="col-md-12 post-btn">
+                <a href="../students/exams"><button class="hover-btn-new orange" style="margin: 10px;"><span>Go Back</span></button></a>
+            </div>
+
+    </div>
+
+</div>
+{% endblock%}

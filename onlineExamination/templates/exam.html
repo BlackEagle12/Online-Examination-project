@@ -3,6 +3,66 @@
 
 {% block content%}
 
+	<style>
+		.customTbl td {
+			color: white;
+			background-color: rgba(39, 39, 3, 0.931);
+			font-family: sans-serif;
+			width: 50px;
+			border-right: 1px black dashed;
+			text-align: center;
+			padding: 3%;
+		}
+		.customTbl th {
+			color: white;
+			background-color: rgba(255, 166, 0, 0.856);
+			border-bottom: 1px black solid;
+			border-right: 1px black dashed;
+			text-align: center;
+		}
+	</style>
+
+	<script type="text/javascript">
+
+		remSecond = {{remain.seconds}};
+		remMinute = {{remain.minutes}};
+		remHour = {{remain.hours}};
+		remDay = {{remain.days}};
+		id = setInterval(myTimer, 1000);
+		function myTimer(){
+			document.getElementById("customseconds").innerHTML = --remSecond;
+			if(remSecond == 0){
+				if(remMinute == 0 ){
+					if(remHour == 0){
+						if(remDay == 0){
+							clearInterval(id);
+						}
+						else{
+							remSecond = 60;
+							document.getElementById("customseconds").innerHTML = --remSecond;
+							remMinute = 60
+							document.getElementById("customminutes").innerHTML = --remMinute;
+							remHour = 60;
+							document.getElementById("customhours").innerHTML = --remHour;
+							document.getElementById("customDays").innerHTML = --remDay;
+						}
+					}
+					else {
+						remSecond = 60;
+						document.getElementById("customseconds").innerHTML = --remSecond;
+						remMinute = 60
+						document.getElementById("customminutes").innerHTML = --remMinute;
+						document.getElementById("customhours").innerHTML = --remHour;
+					}
+				}
+				else {
+					remSecond = 60;
+					document.getElementById("customseconds").innerHTML = --remSecond;
+					document.getElementById("customminutes").innerHTML = --remMinute;
+				}
+			}
+		}
+	</script>
 	<div class="all-title-box">
 		<div class="container text-center">
 			<h1>{{exam.name}}<span class="m_1">Lorem Ipsum dolroin gravida nibh vel velit.</span></h1>
@@ -19,8 +79,25 @@
 						</div>
 						<div class="post-content">
 							<div class="post-date">
-								<span class="day">30</span>
-								<span class="month">Nov</span>
+								<table class="customTbl">
+									<tr>
+										<th>Days</th>
+										<th>Hr</th>
+										<th>Min</th>
+										<th>Sec</th>
+									</tr>
+									<tbody>
+										<tr>
+											<td id="customDays">{{remain.days}}</td>
+											<td id="customhours">{{remain.hours}}</td>
+											<td id="customminutes">{{remain.minutes}}</td>
+											<td id="customseconds"> {{remain.seconds}} </td>
+										</tr>
+									</tbody>
+								</table>
+								<!-- <span id="days" style="background-color: crimson;">{{remain.days}}</span>
+								<span class="day">{{remain.days}}</span>
+								<span class="month">{{remain.hours}}</span> -->
 							</div>
 							<div class="blog-title">
 								<h2><a href="#" title="">{{exam.name}}</a></h2>
