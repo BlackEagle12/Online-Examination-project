@@ -58,7 +58,7 @@ def emailConformation(request):
 
 def sendMail(receiver_email,subject,text):
     sender_email = "vickykumar.manavadariya103232@marwadiuniversity.ac.in"
-    password = "121098@mARWADi"
+    password = "*********" ## enter email password instad of ***
 
     message = MIMEMultipart("alternative")
     message["Subject"] = subject
@@ -87,6 +87,7 @@ def sendMail(receiver_email,subject,text):
         server.sendmail(
             sender_email, receiver_email, message.as_string()
         )
+<<<<<<< HEAD
 
 def forgetPassword(request):
 
@@ -115,3 +116,5 @@ def changepassword(request):
         user.save()
         auth.login(request, user)
     return redirect('/home')
+=======
+>>>>>>> 07d17246639fa4a3c4f7057885cce46d0f2cc39c
