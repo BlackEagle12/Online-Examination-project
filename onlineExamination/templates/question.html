@@ -145,11 +145,13 @@
                           <tr>
                             <th>Hour</th>
                             <th>Minute</th>
+                            <th>Second</th>
                           </tr>
                           <tbody>
                             <tr>
                               <td id="customhours">{{remainTime.hours}}</td>
                               <td id="customminutes">{{remainTime.minutes}}</td>
+                              <td id="custosecound">{{remainTime.seconds}}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -184,11 +186,9 @@
                         </label>
 
                         <div class="col-md-12 post-btn">
-                            {% if no != 1 %}
-                                <button type="submit" name="action" value="prev" class="hover-btn-new orange" style="margin: 10px;"><span>prev</span></button>
-                            {% endif %}
+                            <button type="submit" name="action" id="prevbtn" value="prev" class="hover-btn-new orange" style="margin: 10px;"><span>prev</span></button>
                             <button type="submit" name="action" id="submitbtn" value="submit" class="hover-btn-new orange" style="margin: 10px;"><span>Submit</span></button>
-                            <button type="submit" name="action" value="next" class="hover-btn-new orange" style="margin: 10px;"><span>Next</span></button>
+                            <button type="submit" name="action" id="nextbtn"value="next" class="hover-btn-new orange" style="margin: 10px;"><span>Next</span></button>
                         </div>
 
                 </div>
@@ -201,7 +201,7 @@
             <input type="hidden" name="remainWarnings" id="remainWarnings" value="{{remainWarnings}}"/>
             <input type="hidden" name="remainHours" id="remainHours" value="{{remainTime.hours}}"/>
             <input type="hidden" name="remainMinutes" id="remainMinutes" value="{{remainTime.minutes}}"/>
-
+            <input type="hidden" name="remainSeconds" id="remainSeconds" value="{{remainTime.seconds}}"/>
         </form>
 
     {% endif %}
@@ -227,25 +227,49 @@
 
         remMinutes = {{remainTime.minutes}};
         remHours = {{remainTime.hours}};
+        remSecounds = {{remainTime.seconds}}
         id = setInterval(myTimer, 1000);
         function myTimer(){
-            remMinutes--;
-            document.getElementById("remainMinutes").value = remMinutes;
-            document.getElementById("customminutes").innerHTML = remMinutes;
-            if(remMinutes == 0){
-              if(remHours == 0){
-                clearInterval(id);
-                $("#submitbtn").click();
+            remSecounds--;
+            document.getElementById("remainSeconds").value = remSecounds;
+            document.getElementById("custosecound").innerHTML = remSecounds;
+            if(remSecounds <= 0){
+              if(remMinutes <= 0){
+                if(remHours <= 0){
+                  clearInterval(id);
+                  $("#submitbtn").click();
+                }
+                else{
+                  remHours--;
+                  remMinutes = 59;
+                  remSecounds = 59;
+                  document.getElementById("remainSeconds").value = remSecounds;
+                  document.getElementById("custosecound").innerHTML = remSecounds;
+                  document.getElementById("remainMinutes").value = remMinutes;
+                  document.getElementById("customminutes").innerHTML = remMinutes;
+                  document.getElementById("remainHours").value = remHours;
+                  document.getElementById("customhours").innerHTML = remHours;
+                }
               }
               else{
-                remHours--;
-                remMinutes = 59;
+                remMinutes--;
+                remSecounds = 59;
+                document.getElementById("remainSeconds").value = remSecounds;
+                document.getElementById("custosecound").innerHTML = remSecounds;
                 document.getElementById("remainMinutes").value = remMinutes;
                 document.getElementById("customminutes").innerHTML = remMinutes;
-                document.getElementById("remainHours").value = remHours;
-                document.getElementById("customhours").innerHTML = remHours;
+
               }
             }
+        }
+
+        if({{no}} == 1){
+          document.getElementById("prevbtn").disabled = true;
+          document.getElementById("prevbtn").style.opacity = 0.5
+        }
+        if({{no}} == {{maximum}}){
+          document.getElementById("nextbtn").disabled = true;
+          document.getElementById("nextbtn").style.opacity = 0.5
         }
     </script>
 {% endblock%}

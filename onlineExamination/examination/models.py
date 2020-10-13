@@ -11,6 +11,7 @@ class Test(models.Model):
     instruction = models.TextField()
     total_marks = models.IntegerField()
     multipleAttempts = models.BooleanField(default=True)
+    duration = models.TimeField(null=True)
 
 class Question(models.Model):
     test_id = models.IntegerField()

@@ -121,16 +121,16 @@ def continue_exam(request):
             class remTime:
                 hours : int
                 minutes : int
+                seconds : int
 
             remain = remTime()
-            remain.hours = 0
-            remain.minutes = 2
-
             attemptid = request.GET['attemptid']
             testid = request.GET['testid']
             this.questions = Question.objects.all().filter(test_id=testid)
             test = Test.objects.get(id=testid)
-
+            remain.hours = test.duration.hour
+            remain.minutes = test.duration.minute
+            remain.seconds = test.duration.second
             if len(this.questions) == 0:
                 note = 'THIS QUIZ IS NOT CONFIGURED YET FOR MORE INFORMATION ASK YOUR INSTRUCTOR'
                 return render(request, 'error.html', {'note': note, 'heading':test.name, 'attemptid':attemptid})
@@ -153,6 +153,7 @@ def continue_exam(request):
             action = request.POST['action']
             remain.hours = request.POST['remainHours']
             remain.minutes = request.POST['remainMinutes']
+            remain.seconds = request.POST['remainSeconds']
 
             if(action == "next" or action == "submit" or action == "prev"):
                 question = this.questions[no-1]
@@ -224,7 +225,7 @@ def testView(request):
                     row.answer = Answer()
                     row.answer.attempt_id = x.id
                     row.answer.question_id = None
-                    row.answer.submitted_ans = "Auto submitted due to illegal activity"
+                    row.answer.submitted_ans = "Not Attempted"
                     row.answer.obtained_marks = 0
                 table.allrows.append(row)
                 total = total + row.question.mark
